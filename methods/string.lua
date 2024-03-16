@@ -1,5 +1,39 @@
 local methods = {}
 
+local function handleSpecialString(value, indentation)
+    local output = {}
+	local index = 1
+	local char = string.sub(value, index, index)
+	local indentStr
+
+	while char ~= "" do
+
+		if char == '"' then
+			output[index] = '\\"'
+		elseif char == "\\" then
+			output[index] = "\\\\"
+		elseif char == "\n" then
+			output[index] = "\\n"
+		elseif char == "\t" then
+			output[index] = "\\t"
+		elseif string.byte(char) > 126 or string.byte(char) < 32 then
+			output[index] = string.format("\\%d", string.byte(char))
+		else
+			output[index] = char
+		end
+
+		index = index + 1
+		char = string.sub(value, index, index)
+
+		if index % 200 == 0 then
+			table.move({ '"\n', indentStr, '... "' }, 1, 3, index, output)
+			index += 3
+		end
+	end
+
+	return table.concat(output)
+end
+
 local function toString(value)
     local dataType = typeof(value)
 
@@ -56,7 +90,7 @@ local function dataToString(data)
         return userdataValue(data)
     end
 
-    return tostring(data)
+    return handleSpecialString(tostring(data))
 end
 
 local function toUnicode(string)
