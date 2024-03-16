@@ -106,4 +106,6 @@ end
 methods.toString = toString
 methods.dataToString = dataToString
 methods.toUnicode = toUnicode
+methods.handleSpecialString = handleSpecialString
+
 return methods
