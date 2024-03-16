@@ -81,6 +81,5 @@ end
 
 methods.tableToString = tableToString
 methods.compareTables = compareTables
-methods.handleSpecialString = handleSpecialString
 
 return methods
