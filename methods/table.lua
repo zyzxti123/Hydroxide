@@ -40,12 +40,7 @@ local function tableToString(data, root, indents)
     if dataType == "userdata" then
         return (typeof(data) == "Instance" and getInstancePath(data)) or userdataValue(data)
     elseif dataType == "string" then
-        if #(data:gsub('%w', ''):gsub('%s', ''):gsub('%p', '')) > 0 then
-            local success, result = pcall(toUnicode, data)
-            return (success and result) or toString(data)
-        else
-            return ('"%s"'):format(handleSpecialString(data)) --('"%s"'):format(data:gsub('"', '\\"'))
-        end
+        return ('"%s"'):format(handleSpecialString(data))
     elseif dataType == "table" then
         indents = indents or 1
         root = root or data
@@ -86,4 +81,5 @@ end
 
 methods.tableToString = tableToString
 methods.compareTables = compareTables
+
 return methods
